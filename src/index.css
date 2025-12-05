@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Degular";
+  src: url("./assets/fonts/Degular/fonnts.com-DegularDemo-Regular.otf")
+    format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Degular";
+  src: url("./assets/fonts/Degular/fonnts.com-DegularDemo-Medium.otf")
+    format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Degular";
+  src: url("./assets/fonts/Degular/fonnts.com-DegularDemo-Semibold.otf")
+    format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Degular";
+  src: url("./assets/fonts/Degular/fonnts.com-DegularDemo-Bold.otf")
+    format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@theme {
+  --color-gray-400: #56616b;
+  --color-gray-50: #eff1f6;
+  --color-black-300: #131316;
+  --color-profile-bg: #eff1f6;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-gray-900;
+    font-family: "Degular", sans-serif;
+  }
+
+  html {
+    @apply h-full;
+  }
+
+  #root {
+    @apply min-h-full;
+  }
+}
+
+@layer utilities {
+  .bg-profile-gradient {
+    background: linear-gradient(138.98deg, #5c6670 2.33%, #131316 96.28%);
+  }
+
+  .text-profile-gradient {
+    background: linear-gradient(107.68deg, #ffffff -6.45%, #f2f3f5 114.84%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .shadow-sidebar {
+    box-shadow: 0px 6px 12px 0px rgba(92, 115, 131, 0.078),
+      0px 4px 8px 0px rgba(92, 115, 131, 0.078);
+  }
+}
