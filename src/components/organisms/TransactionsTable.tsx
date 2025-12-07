@@ -1,4 +1,13 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import {
+  startOfDay,
+  startOfMonth,
+  subDays,
+  subMonths,
+  isWithinInterval,
+  isSameDay,
+  isSameMonth,
+} from "date-fns";
 import ChevronDownIcon from "../../assets/icons/chevron-down.svg?react";
 import DownloadIcon from "../../assets/icons/download.svg?react";
 import { useTransactions } from "../../queries/revenue.queries";
@@ -15,15 +24,104 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
   SheetTrigger,
-  SheetDateFilters,
-  FilterForm,
 } from "./Sheet";
+import {
+  TransactionDateFilters,
+  TransactionFilterForm,
+} from "./TransactionFilters";
+
+interface FilterState {
+  startDate?: string;
+  endDate?: string;
+  selectedPeriod?: string;
+  transactionTypes: string[];
+  transactionStatuses: string[];
+}
 
 export default function TransactionsTable() {
   const { data: transactions, isLoading } = useTransactions();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState<FilterState>({
+    transactionTypes: [],
+    transactionStatuses: [],
+  });
+
+  const filteredTransactions = useMemo(() => {
+    if (!transactions) return [];
+
+    let filtered = [...transactions];
+
+    if (filters.startDate) {
+      filtered = filtered.filter(
+        (t) => new Date(t.date) >= new Date(filters.startDate!)
+      );
+    }
+    if (filters.endDate) {
+      filtered = filtered.filter(
+        (t) => new Date(t.date) <= new Date(filters.endDate!)
+      );
+    }
+
+    if (filters.selectedPeriod) {
+      const today = new Date();
+      const referenceDate = startOfDay(today);
+      let startDate: Date;
+      let endDate: Date = referenceDate;
+
+      switch (filters.selectedPeriod) {
+        case "Today":
+          filtered = filtered.filter((t) => {
+            const transactionDate = startOfDay(new Date(t.date));
+            return isSameDay(transactionDate, referenceDate);
+          });
+          break;
+        case "Last 7 days":
+          startDate = subDays(referenceDate, 6);
+          filtered = filtered.filter((t) => {
+            const transactionDate = startOfDay(new Date(t.date));
+            return isWithinInterval(transactionDate, {
+              start: startDate,
+              end: endDate,
+            });
+          });
+          break;
+        case "This month":
+          startDate = startOfMonth(referenceDate);
+          filtered = filtered.filter((t) => {
+            const transactionDate = new Date(t.date);
+            return isSameMonth(transactionDate, referenceDate);
+          });
+          break;
+        case "Last 3 months":
+          startDate = startOfMonth(subMonths(referenceDate, 2));
+          filtered = filtered.filter((t) => {
+            const transactionDate = startOfDay(new Date(t.date));
+            return isWithinInterval(transactionDate, {
+              start: startDate,
+              end: endDate,
+            });
+          });
+          break;
+        default:
+          break;
+      }
+    }
+
+    if (filters.transactionTypes.length > 0) {
+      filtered = filtered.filter((t) =>
+        filters.transactionTypes.includes(t.type)
+      );
+    }
+
+    if (filters.transactionStatuses.length > 0) {
+      filtered = filtered.filter((t) =>
+        filters.transactionStatuses.includes(t.status)
+      );
+    }
+
+    return filtered;
+  }, [transactions, filters]);
 
   if (transactions) {
     console.log("=== TRANSACTIONS DATA ===");
@@ -54,7 +152,7 @@ export default function TransactionsTable() {
           </aside>
         </header>
 
-        <div className="mt-6 space-y-6">
+        <div className="mt-6 space-y-6" style={{ minHeight: "400px" }}>
           {[1, 2, 3, 4, 5, 6].map((index) => (
             <div key={index} className="flex items-center justify-between pb-6">
               <div className="flex items-center gap-x-[14.5px]">
@@ -75,10 +173,43 @@ export default function TransactionsTable() {
     );
   }
 
-  const displayTransactions = transformTransactions(transactions);
+  const displayTransactions = transformTransactions(filteredTransactions);
 
   const handleExport = () => {
     exportTransactionsToCsv(displayTransactions);
+  };
+
+  const handleStartDateChange = (date: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      startDate: date,
+      selectedPeriod: undefined,
+    }));
+  };
+
+  const handleEndDateChange = (date: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      endDate: date,
+      selectedPeriod: undefined,
+    }));
+  };
+
+  const handlePeriodChange = (period: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      selectedPeriod: prev.selectedPeriod === period ? undefined : period,
+      startDate: undefined,
+      endDate: undefined,
+    }));
+  };
+
+  const handleTransactionTypeChange = (types: string[]) => {
+    setFilters((prev) => ({ ...prev, transactionTypes: types }));
+  };
+
+  const handleTransactionStatusChange = (statuses: string[]) => {
+    setFilters((prev) => ({ ...prev, transactionStatuses: statuses }));
   };
 
   return (
@@ -86,10 +217,14 @@ export default function TransactionsTable() {
       <header className="flex justify-between items-center border-b border-gray-50 pb-6">
         <aside className="flex flex-col">
           <h1 className="text font-bold text-2xl">
-            {transactions.length} Transactions
+            {filteredTransactions.length} Transactions
           </h1>
           <div className="text-gray-400 text-sm">
-            Your transactions for the last 7 days
+            {filters.selectedPeriod
+              ? `Your transactions for ${filters.selectedPeriod.toLowerCase()}`
+              : filters.startDate || filters.endDate
+              ? "Your filtered transactions"
+              : "Your transactions for the last 7 days"}
           </div>
         </aside>
 
@@ -111,19 +246,20 @@ export default function TransactionsTable() {
               <SheetHeader onClose={() => setIsFilterOpen(false)}>
                 <SheetTitle>Filter</SheetTitle>
               </SheetHeader>
-              <SheetDateFilters
-                onPeriodChange={(period) => {
-                  console.log("Selected period:", period);
-                }}
+              <TransactionDateFilters
+                selectedPeriod={filters.selectedPeriod}
+                onPeriodChange={handlePeriodChange}
               />
-              <FilterForm
+              <TransactionFilterForm
                 transactions={transactions}
-                onStartDateChange={(date) => {
-                  console.log("Start date:", date);
-                }}
-                onEndDateChange={(date) => {
-                  console.log("End date:", date);
-                }}
+                startDate={filters.startDate}
+                endDate={filters.endDate}
+                transactionTypes={filters.transactionTypes}
+                transactionStatuses={filters.transactionStatuses}
+                onStartDateChange={handleStartDateChange}
+                onEndDateChange={handleEndDateChange}
+                onTransactionTypeChange={handleTransactionTypeChange}
+                onTransactionStatusChange={handleTransactionStatusChange}
               />
             </SheetContent>
           </Sheet>
@@ -139,59 +275,83 @@ export default function TransactionsTable() {
         </aside>
       </header>
 
-      <table className="w-full mt-6">
-        <tbody>
-          {displayTransactions.map((transaction, index) => {
-            const { icon: Icon, bgColor } =
-              TRANSACTION_TYPE_CONFIG[transaction.displayType];
-            return (
-              <tr
-                key={transaction.payment_reference || index}
-                className={index < displayTransactions.length - 1 ? "mb-6" : ""}
-              >
-                <td className="align-middle pb-6">
-                  <div className="flex items-center gap-x-[14.5px]">
-                    <div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center ${bgColor}`}
-                    >
-                      <Icon className="w-3 h-3" />
-                    </div>
-                    <div className="flex flex-col gap-y-[9px]">
-                      <span className="text-black-300 text-base font-medium leading-[24px] tracking-[-0.2px]">
-                        {transaction.title}
-                      </span>
-                      {transaction.displayType === "debit" &&
-                      transaction.status ? (
-                        <span
-                          className={`text-sm font-medium leading-4 tracking-[-0.2px] capitalize ${
-                            transaction.status === "successful"
-                              ? "text-success"
-                              : "text-pending"
-                          }`}
-                        >
-                          {transaction.status}
+      {displayTransactions.length === 0 ? (
+        <div
+          className="mt-6 flex flex-col items-center justify-center"
+          style={{ minHeight: "400px" }}
+        >
+          <div className="text-center">
+            <div className="text-gray-400 text-base font-medium mb-2">
+              No transactions found
+            </div>
+            <div className="text-gray-400 text-sm">
+              {filters.selectedPeriod ||
+              filters.startDate ||
+              filters.endDate ||
+              filters.transactionTypes.length > 0 ||
+              filters.transactionStatuses.length > 0
+                ? "Try adjusting your filters to see more results"
+                : "There are no transactions to display"}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <table className="w-full mt-6">
+          <tbody>
+            {displayTransactions.map((transaction, index) => {
+              const { icon: Icon, bgColor } =
+                TRANSACTION_TYPE_CONFIG[transaction.displayType];
+              return (
+                <tr
+                  key={transaction.payment_reference || index}
+                  className={
+                    index < displayTransactions.length - 1 ? "mb-6" : ""
+                  }
+                >
+                  <td className="align-middle pb-6">
+                    <div className="flex items-center gap-x-[14.5px]">
+                      <div
+                        className={`w-12 h-12 rounded-full flex items-center justify-center ${bgColor}`}
+                      >
+                        <Icon className="w-3 h-3" />
+                      </div>
+                      <div className="flex flex-col gap-y-[9px]">
+                        <span className="text-black-300 text-base font-medium leading-[24px] tracking-[-0.2px]">
+                          {transaction.title}
                         </span>
-                      ) : (
-                        <span className="text-gray-400 text-sm font-medium leading-4 tracking-[-0.2px]">
-                          {transaction.author}
-                        </span>
-                      )}
+                        {transaction.displayType === "debit" &&
+                        transaction.status ? (
+                          <span
+                            className={`text-sm font-medium leading-4 tracking-[-0.2px] capitalize ${
+                              transaction.status === "successful"
+                                ? "text-success"
+                                : "text-pending"
+                            }`}
+                          >
+                            {transaction.status}
+                          </span>
+                        ) : (
+                          <span className="text-gray-400 text-sm font-medium leading-4 tracking-[-0.2px]">
+                            {transaction.author}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="text-right align-middle pb-6">
-                  <div className="text-base font-bold leading-[24px] tracking-[-0.4px] text-black-300">
-                    {formatCurrency(transaction.amount)}
-                  </div>
-                  <div className="text-sm font-medium leading-4 tracking-[-0.2px] text-gray-400 mt-1">
-                    {formatDate(transaction.date)}
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  </td>
+                  <td className="text-right align-middle pb-6">
+                    <div className="text-base font-bold leading-[24px] tracking-[-0.4px] text-black-300">
+                      {formatCurrency(transaction.amount)}
+                    </div>
+                    <div className="text-sm font-medium leading-4 tracking-[-0.2px] text-gray-400 mt-1">
+                      {formatDate(transaction.date)}
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

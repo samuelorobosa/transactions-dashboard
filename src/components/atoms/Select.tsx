@@ -23,6 +23,11 @@ export function CustomSelect({
   const [selectedValues, setSelectedValues] = useState<string[]>(value);
   const selectRef = useRef<HTMLDivElement>(null);
 
+  // Sync internal state with external value prop
+  useEffect(() => {
+    setSelectedValues(value);
+  }, [value]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

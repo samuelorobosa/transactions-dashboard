@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calendar } from "./Calendar";
 
 interface DateRangePickerProps {
@@ -22,6 +22,23 @@ export function DateRangePicker({
   );
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectingStart, setSelectingStart] = useState(true);
+
+  // Sync internal state with external props
+  useEffect(() => {
+    if (startDate) {
+      setStartDateValue(new Date(startDate));
+    } else {
+      setStartDateValue(undefined);
+    }
+  }, [startDate]);
+
+  useEffect(() => {
+    if (endDate) {
+      setEndDateValue(new Date(endDate));
+    } else {
+      setEndDateValue(undefined);
+    }
+  }, [endDate]);
 
   const formatDate = (date: Date | undefined): string => {
     if (!date) return "";

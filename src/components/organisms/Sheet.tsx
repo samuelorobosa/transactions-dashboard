@@ -1,8 +1,5 @@
 import { useEffect, useState, useRef, createContext } from "react";
 import CloseIcon from "../../assets/icons/close.svg?react";
-import { DateRangePicker } from "../molecules/DateRangePicker";
-import { TransactionTypeSelect } from "../molecules/TransactionTypeSelect";
-import type { Transaction } from "../../types/app";
 
 const SheetContainerContext = createContext<HTMLDivElement | null>(null);
 
@@ -26,7 +23,7 @@ interface SheetTriggerProps {
   onClick?: () => void;
 }
 
-export function Sheet({ open, onOpenChange, children }: SheetProps) {
+export function Sheet({ open, children }: SheetProps) {
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -203,61 +200,4 @@ export function SheetClose({
   onClick?: () => void;
 }) {
   return <div onClick={onClick}>{children}</div>;
-}
-
-export function SheetDateFilters({
-  selectedPeriod,
-  onPeriodChange,
-}: {
-  selectedPeriod?: string;
-  onPeriodChange?: (period: string) => void;
-}) {
-  const periods = ["Today", "Last 7 days", "This month", "Last 3 months"];
-
-  return (
-    <div className="flex justify-between gap-3">
-      {periods.map((period) => (
-        <button
-          key={period}
-          onClick={() => onPeriodChange?.(period)}
-          className="font-semibold text-sm leading-4 tracking-[-0.4px] align-middle text-black-300 h-9 rounded-full border border-gray-50 px-4 hover:bg-gray-50 transition-colors cursor-pointer"
-        >
-          {period}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-export function FilterForm({
-  startDate,
-  endDate,
-  onStartDateChange,
-  onEndDateChange,
-  transactions,
-}: {
-  startDate?: string;
-  endDate?: string;
-  onStartDateChange?: (date: string) => void;
-  onEndDateChange?: (date: string) => void;
-  transactions?: Transaction[];
-}) {
-  return (
-    <>
-      <DateRangePicker
-        startDate={startDate}
-        endDate={endDate}
-        onStartDateChange={onStartDateChange}
-        onEndDateChange={onEndDateChange}
-      />
-      <div className="mt-6">
-        <label className="font-semibold text-base leading-6 tracking-[-0.4px] align-middle text-black-300 block mb-3">
-          Transaction Type
-        </label>
-        <div className="mt-3">
-          <TransactionTypeSelect transactions={transactions} />
-        </div>
-      </div>
-    </>
-  );
 }
