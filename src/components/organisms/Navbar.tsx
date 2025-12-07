@@ -8,9 +8,14 @@ import AppsIcon from "../../assets/icons/apps.svg?react";
 import NotificationsIcon from "../../assets/icons/notifications.svg?react";
 import ChatIcon from "../../assets/icons/chat.svg?react";
 import MenuIcon from "../../assets/icons/menu.svg?react";
+import ChevronDownIcon from "../../assets/icons/chevron-down.svg?react";
+import LinkInBioIcon from "../../assets/icons/link-in-bio.svg?react";
+import StoreIcon from "../../assets/icons/store.svg?react";
+import MediaKitIcon from "../../assets/icons/media-kit.svg?react";
+import InvoicingIcon from "../../assets/icons/invoicing.svg?react";
 import { CiSettings, CiLogout } from "react-icons/ci";
 import { GoBug } from "react-icons/go";
-import { MdSwitchAccount, MdCardGiftcard, MdApps } from "react-icons/md";
+import { MdSwitchAccount, MdCardGiftcard } from "react-icons/md";
 import { IoReceiptOutline } from "react-icons/io5";
 import { useUser } from "../../queries/revenue.queries";
 import { getUserInitials } from "../../utils";
@@ -21,16 +26,45 @@ export default function Navbar() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isAppsExpanded, setIsAppsExpanded] = useState(false);
+  const [isLinkInBioMenuOpen, setIsLinkInBioMenuOpen] = useState(false);
+  const [isLinkInBioAnimating, setIsLinkInBioAnimating] = useState(false);
+  const [isLinkInBioMounted, setIsLinkInBioMounted] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
+  const appsRef = useRef<HTMLDivElement>(null);
+  const linkInBioMenuRef = useRef<HTMLDivElement>(null);
 
   const profileMenuOptions = [
     { name: "Settings", icon: CiSettings },
     { name: "Purchase History", icon: IoReceiptOutline },
     { name: "Refer and Earn", icon: MdCardGiftcard },
-    { name: "Integrations", icon: MdApps },
+    { name: "Integrations", icon: AppsIcon },
     { name: "Report Bug", icon: GoBug },
     { name: "Switch Account", icon: MdSwitchAccount },
     { name: "Sign Out", icon: CiLogout },
+  ];
+
+  const linkInBioMenuOptions = [
+    {
+      icon: LinkInBioIcon,
+      title: "Link in Bio",
+      description: "Manage your Link in Bio",
+    },
+    {
+      icon: StoreIcon,
+      title: "Store",
+      description: "Manage your Store Activities",
+    },
+    {
+      icon: MediaKitIcon,
+      title: "Media Kit",
+      description: "Manage your Media Kit",
+    },
+    {
+      icon: InvoicingIcon,
+      title: "Invoicing",
+      description: "Manage your Invoices",
+    },
   ];
 
   const navLinks = [
@@ -81,16 +115,30 @@ export default function Navbar() {
           setIsAnimating(false);
         }, 200);
       }
+      if (appsRef.current && !appsRef.current.contains(event.target as Node)) {
+        setIsAppsExpanded(false);
+      }
+      if (
+        linkInBioMenuRef.current &&
+        !linkInBioMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsLinkInBioAnimating(true);
+        setTimeout(() => {
+          setIsLinkInBioMenuOpen(false);
+          setIsLinkInBioMounted(false);
+          setIsLinkInBioAnimating(false);
+        }, 200);
+      }
     };
 
-    if (isProfileMenuOpen) {
+    if (isProfileMenuOpen || isAppsExpanded || isLinkInBioMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isProfileMenuOpen]);
+  }, [isProfileMenuOpen, isAppsExpanded, isLinkInBioMenuOpen]);
 
   const handleProfileMenuToggle = () => {
     if (!isProfileMenuOpen) {
@@ -122,6 +170,49 @@ export default function Navbar() {
     }, 200);
   };
 
+  const handleLinkInBioMenuToggle = () => {
+    if (!isLinkInBioMenuOpen) {
+      setIsLinkInBioMounted(true);
+      setIsLinkInBioAnimating(true);
+      setIsLinkInBioMenuOpen(true);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsLinkInBioAnimating(false);
+        });
+      });
+    } else {
+      setIsLinkInBioAnimating(true);
+      setTimeout(() => {
+        setIsLinkInBioMenuOpen(false);
+        setIsLinkInBioMounted(false);
+        setIsLinkInBioAnimating(false);
+      }, 200);
+    }
+  };
+
+  const handleLinkInBioOptionClick = (option: string) => {
+    console.log(`Clicked: ${option}`);
+    setIsLinkInBioAnimating(true);
+    setTimeout(() => {
+      setIsLinkInBioMenuOpen(false);
+      setIsLinkInBioMounted(false);
+      setIsLinkInBioAnimating(false);
+    }, 200);
+  };
+
+  const handleAppsClick = () => {
+    setIsAppsExpanded(true);
+    // Open Link In Bio menu immediately
+    setIsLinkInBioMounted(true);
+    setIsLinkInBioAnimating(true);
+    setIsLinkInBioMenuOpen(true);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setIsLinkInBioAnimating(false);
+      });
+    });
+  };
+
   return (
     <nav className="w-full h-16 bg-white border-2 border-white rounded-[100px] shadow-[0px_2px_4px_0px_rgba(45,59,67,0.051),0px_2px_6px_0px_rgba(45,59,67,0.059)] flex items-center justify-between p-3">
       <div className="flex items-center">
@@ -130,6 +221,78 @@ export default function Navbar() {
 
       <div className="flex items-center gap-6">
         {navLinks.map((link) => {
+          if (link.name === "Apps") {
+            return (
+              <div key={link.name} ref={appsRef} className="relative">
+                {isAppsExpanded ? (
+                  <div className="relative" ref={linkInBioMenuRef}>
+                    <div className="flex items-center bg-black-300 rounded-full overflow-hidden h-10">
+                      <button className="flex items-center gap-2 px-4 py-2 h-full text-white transition-colors hover:bg-black-300/90">
+                        <AppsIcon className="w-5 h-5 text-white [&>path]:fill-white" />
+                        <span className="leading-6">Apps</span>
+                      </button>
+                      <div className="w-px h-full bg-white/20"></div>
+                      <button
+                        onClick={handleLinkInBioMenuToggle}
+                        className="flex items-center gap-2 px-4 py-2 h-full text-white transition-colors hover:bg-black-300/90"
+                      >
+                        <span className="leading-6">Link In Bio</span>
+                        <ChevronDownIcon className="w-4 h-4 ml-1 text-white [&>path]:fill-white" />
+                      </button>
+                    </div>
+                    {isLinkInBioMounted && (
+                      <div
+                        className={`absolute right-0 top-[calc(100%+8px)] z-50 w-[360px] bg-white rounded-lg transition-all duration-200 ease-in-out p-2 shadow-[0px_6px_12px_0px_rgba(92,115,131,0.08),0px_4px_8px_0px_rgba(92,115,131,0.08)] ${
+                          isLinkInBioAnimating
+                            ? isLinkInBioMenuOpen
+                              ? "opacity-100 translate-y-0"
+                              : "opacity-0 -translate-y-2"
+                            : "opacity-100 translate-y-0"
+                        }`}
+                      >
+                        {linkInBioMenuOptions.map((option, index) => {
+                          const Icon = option.icon;
+                          return (
+                            <div
+                              key={index}
+                              onClick={() =>
+                                handleLinkInBioOptionClick(option.title)
+                              }
+                              className="flex items-center cursor-pointer rounded-md transition-all p-[14px] gap-3 hover:border hover:border-gray-200 hover:shadow-sm mb-2 last:mb-0"
+                            >
+                              <div className="w-8 h-8 rounded border border-gray-200 flex items-center justify-center">
+                                <Icon className="w-5 h-5" />
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="font-medium text-sm leading-6 tracking-[-0.4px] text-black-300">
+                                  {option.title}
+                                </span>
+                                <span className="text-xs text-gray-400">
+                                  {option.description}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleAppsClick}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full group ${
+                      getLinkStyle(link.name).link
+                    }`}
+                  >
+                    <link.icon
+                      className={`w-5 h-5 ${getLinkStyle(link.name).icon}`}
+                    />
+                    <span className="leading-6">{link.name}</span>
+                  </button>
+                )}
+              </div>
+            );
+          }
           const style = getLinkStyle(link.name);
           return (
             <a
