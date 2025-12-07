@@ -7,8 +7,12 @@ import AppsIcon from "../assets/icons/apps.svg?react";
 import NotificationsIcon from "../assets/icons/notifications.svg?react";
 import ChatIcon from "../assets/icons/chat.svg?react";
 import MenuIcon from "../assets/icons/menu.svg?react";
+import { useUser } from "../queries/revenue.queries";
+import { getUserInitials } from "../utils";
 
 export default function Navbar() {
+  const { data: userData } = useUser();
+
   const navLinks = [
     { name: "Home", icon: HomeIcon },
     { name: "Analytics", icon: AnalyticsIcon },
@@ -18,20 +22,30 @@ export default function Navbar() {
   ];
 
   const linkStyles = {
+    Home: {
+      link: "text-gray-400 hover:text-gray-900",
+      icon: "fill-gray-400 group-hover:fill-gray-900",
+    },
+    Analytics: {
+      link: "text-gray-400 hover:text-gray-900",
+      icon: "fill-gray-400 group-hover:fill-gray-900",
+    },
     Revenue: {
       link: "bg-black-300 text-white",
       icon: "fill-white",
     },
-    default: {
+    CRM: {
+      link: "text-gray-400 hover:text-gray-900",
+      icon: "fill-gray-400 group-hover:fill-gray-900",
+    },
+    Apps: {
       link: "text-gray-400 hover:text-gray-900",
       icon: "fill-gray-400 group-hover:fill-gray-900",
     },
   };
 
   const getLinkStyle = (linkName: string) => {
-    return (
-      linkStyles[linkName as keyof typeof linkStyles] || linkStyles.default
-    );
+    return linkStyles[linkName as keyof typeof linkStyles];
   };
 
   return (
@@ -71,12 +85,16 @@ export default function Navbar() {
         </button>
 
         {/* Profile Menu with Initials */}
-        <div className="w-[81px] bg-profile-bg cursor-pointer rounded-[100px] py-1 px-[5px] flex items-center gap-x-2">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold bg-profile-gradient">
-            <span className="text-profile-gradient">OJ</span>
+        {userData && (
+          <div className="w-[81px] bg-profile-bg cursor-pointer rounded-[100px] py-1 px-[5px] flex items-center gap-x-2">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold bg-profile-gradient">
+              <span className="text-profile-gradient">
+                {getUserInitials(userData)}
+              </span>
+            </div>
+            <MenuIcon className="w-6 h-6 fill-gray-400" />
           </div>
-          <MenuIcon className="w-6 h-6 fill-gray-400" />
-        </div>
+        )}
       </div>
     </nav>
   );

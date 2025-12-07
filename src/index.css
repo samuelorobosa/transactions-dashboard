@@ -37,6 +37,11 @@
   --color-gray-50: #eff1f6;
   --color-black-300: #131316;
   --color-profile-bg: #eff1f6;
+  --color-credit-bg: #e3fcf2;
+  --color-debit-bg: #f9e3e0;
+  --color-success: #0ea163;
+  --color-pending: #a77a07;
+  --color-chart-line: #ff5403;
 }
 
 @layer base {
