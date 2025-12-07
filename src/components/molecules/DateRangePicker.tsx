@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Calendar } from "./Calendar";
 import ChevronDownIcon from "../../assets/icons/chevron-down.svg?react";
 
@@ -23,6 +23,7 @@ export function DateRangePicker({
   );
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectingStart, setSelectingStart] = useState(true);
+  const calendarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (startDate) {
@@ -39,6 +40,25 @@ export function DateRangePicker({
       setEndDateValue(undefined);
     }
   }, [endDate]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target as Node)
+      ) {
+        setShowCalendar(false);
+      }
+    };
+
+    if (showCalendar) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showCalendar]);
 
   const formatDate = (date: Date | undefined): string => {
     if (!date) return "";
@@ -64,12 +84,15 @@ export function DateRangePicker({
 
   const handleDateSelect = (date: Date | undefined) => {
     const selectedDate = date;
+    if (!selectedDate) return;
 
     if (selectingStart) {
-      setStartDateValue(selectedDate);
-      if (selectedDate) {
-        onStartDateChange?.(selectedDate.toISOString().split("T")[0]);
+      if (endDateValue && selectedDate > endDateValue) {
+        setEndDateValue(selectedDate);
+        onEndDateChange?.(selectedDate.toISOString().split("T")[0]);
       }
+      setStartDateValue(selectedDate);
+      onStartDateChange?.(selectedDate.toISOString().split("T")[0]);
       setSelectingStart(false);
       if (!endDateValue) {
         setShowCalendar(true);
@@ -77,10 +100,12 @@ export function DateRangePicker({
         setShowCalendar(false);
       }
     } else {
-      setEndDateValue(selectedDate);
-      if (selectedDate) {
-        onEndDateChange?.(selectedDate.toISOString().split("T")[0]);
+      if (startDateValue && selectedDate < startDateValue) {
+        setStartDateValue(selectedDate);
+        onStartDateChange?.(selectedDate.toISOString().split("T")[0]);
       }
+      setEndDateValue(selectedDate);
+      onEndDateChange?.(selectedDate.toISOString().split("T")[0]);
       setShowCalendar(false);
     }
   };
@@ -96,7 +121,7 @@ export function DateRangePicker({
   };
 
   return (
-    <div className="mt-6 relative">
+    <div className="mt-6 relative" ref={calendarRef}>
       <label className="font-semibold text-base leading-6 tracking-[-0.4px] align-middle text-black-300 block mb-3">
         Date Range
       </label>
@@ -109,7 +134,11 @@ export function DateRangePicker({
           <span>
             {startDateValue ? formatDate(startDateValue) : "Start Date"}
           </span>
-          <ChevronDownIcon className="w-2.5 h-2.5 text-gray-400 flex-shrink-0" />
+          <ChevronDownIcon
+            className={`w-2.5 h-2.5 text-gray-400 flex-shrink-0 transition-transform ${
+              showCalendar && selectingStart ? "rotate-180" : ""
+            }`}
+          />
         </button>
         <button
           type="button"
@@ -117,7 +146,11 @@ export function DateRangePicker({
           className="flex-1 min-w-0 h-12 rounded-lg border border-gray-50 px-4 text-left text-sm text-black-300 hover:bg-gray-50 transition-colors cursor-pointer focus:outline-none focus:border-[3px] focus:border-black-300 flex items-center justify-between"
         >
           <span>{endDateValue ? formatDate(endDateValue) : "End Date"}</span>
-          <ChevronDownIcon className="w-2.5 h-2.5 text-gray-400 flex-shrink-0" />
+          <ChevronDownIcon
+            className={`w-2.5 h-2.5 text-gray-400 flex-shrink-0 transition-transform ${
+              showCalendar && !selectingStart ? "rotate-180" : ""
+            }`}
+          />
         </button>
       </div>
       {showCalendar && (
