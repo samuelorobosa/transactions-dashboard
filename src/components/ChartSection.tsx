@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+import Skeleton from "./Skeleton";
 
 const CustomXAxisTick = ({ x, y, payload }: any) => {
   return (
@@ -43,32 +44,32 @@ export default function ChartSection() {
     return (
       <div className="flex gap-[124px] mb-[82px] mt-16">
         <div className="flex-1">
-          <div className="flex gap-x-16 items-center">
-            <div className="flex flex-col gap-y-2">
-              <span className="text-sm text-gray-400">Available Balance</span>
-              <span className="font-bold text-4xl leading-[48px] tracking-[-1.5px] text-black-300">
-                Loading...
-              </span>
+          <div className="flex flex-col gap-8">
+            <div className="flex gap-x-16 items-center">
+              <div className="flex flex-col gap-y-2">
+                <Skeleton width={120} height={16} className="mb-2" />
+                <Skeleton width={200} height={48} />
+              </div>
+              <Skeleton
+                width={167}
+                height={52}
+                variant="rectangular"
+                className="rounded-full"
+              />
             </div>
-            <button className="w-[167px] h-[52px] rounded-full bg-black-300 text-white text-sm font-semibold leading-4 tracking-[-0.2px]">
-              Withdraw
-            </button>
+            {/* Chart skeleton */}
+            <Skeleton width="100%" height={300} variant="rectangular" />
           </div>
-          {/* Chart here */}
         </div>
         <div className="w-[271px]">
           <div className="flex flex-col gap-8">
             {[1, 2, 3, 4].map((index) => (
               <div key={index} className="flex flex-col gap-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-400 text-sm font-medium leading-4 tracking-[-0.2px]">
-                    Loading...
-                  </span>
-                  <InfoIcon />
+                  <Skeleton width={120} height={16} />
+                  <Skeleton width={16} height={16} variant="circular" />
                 </div>
-                <div className="text-black-300 text-[28px] font-bold leading-[32px] tracking-[-0.6px]">
-                  Loading...
-                </div>
+                <Skeleton width={180} height={32} />
               </div>
             ))}
           </div>

@@ -9,9 +9,10 @@ import ChatIcon from "../assets/icons/chat.svg?react";
 import MenuIcon from "../assets/icons/menu.svg?react";
 import { useUser } from "../queries/revenue.queries";
 import { getUserInitials } from "../utils";
+import Skeleton from "./Skeleton";
 
 export default function Navbar() {
-  const { data: userData } = useUser();
+  const { data: userData, isLoading: userLoading } = useUser();
 
   const navLinks = [
     { name: "Home", icon: HomeIcon },
@@ -85,7 +86,14 @@ export default function Navbar() {
         </button>
 
         {/* Profile Menu with Initials */}
-        {userData && (
+        {userLoading ? (
+          <Skeleton
+            width={81}
+            height={40}
+            variant="rectangular"
+            className="rounded-[100px]"
+          />
+        ) : userData ? (
           <div className="w-[81px] bg-profile-bg cursor-pointer rounded-[100px] py-1 px-[5px] flex items-center gap-x-2">
             <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold bg-profile-gradient">
               <span className="text-profile-gradient">
@@ -94,7 +102,7 @@ export default function Navbar() {
             </div>
             <MenuIcon className="w-6 h-6 fill-gray-400" />
           </div>
-        )}
+        ) : null}
       </div>
     </nav>
   );
