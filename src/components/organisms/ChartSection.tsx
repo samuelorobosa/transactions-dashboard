@@ -104,7 +104,7 @@ export default function ChartSection() {
                 {formatCurrency(walletData.balance)}
               </span>
             </div>
-            <button className="w-[167px] h-[52px] rounded-full bg-black-300 text-white text-sm font-semibold leading-4 tracking-[-0.2px]">
+            <button className="w-[167px] cursor-pointer h-[52px] rounded-full bg-black-300 text-white text-sm font-semibold leading-4 tracking-[-0.2px]">
               Withdraw
             </button>
           </div>
