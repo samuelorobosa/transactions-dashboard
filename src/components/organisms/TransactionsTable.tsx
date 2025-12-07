@@ -125,13 +125,13 @@ export default function TransactionsTable() {
 
   if (isLoading || !transactions) {
     return (
-      <div>
+      <section>
         <header className="flex justify-between items-center border-b border-gray-50 pb-6">
-          <aside className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2">
             <Skeleton width={200} height={32} />
             <Skeleton width={250} height={20} />
-          </aside>
-          <aside className="flex gap-3">
+          </div>
+          <div className="flex gap-3">
             <Skeleton
               width={107}
               height={44}
@@ -144,12 +144,15 @@ export default function TransactionsTable() {
               variant="rectangular"
               className="rounded-full"
             />
-          </aside>
+          </div>
         </header>
 
         <div className="mt-6 space-y-6" style={{ minHeight: "400px" }}>
           {[1, 2, 3, 4, 5, 6].map((index) => (
-            <div key={index} className="flex items-center justify-between pb-6">
+            <article
+              key={index}
+              className="flex items-center justify-between pb-6"
+            >
               <div className="flex items-center gap-x-[14.5px]">
                 <Skeleton width={48} height={48} variant="circular" />
                 <div className="flex flex-col gap-y-[9px]">
@@ -161,10 +164,10 @@ export default function TransactionsTable() {
                 <Skeleton width={100} height={24} />
                 <Skeleton width={80} height={16} />
               </div>
-            </div>
+            </article>
           ))}
         </div>
-      </div>
+      </section>
     );
   }
 
@@ -208,22 +211,22 @@ export default function TransactionsTable() {
   };
 
   return (
-    <div>
+    <section>
       <header className="flex justify-between items-center border-b border-gray-50 pb-6">
-        <aside className="flex flex-col">
+        <div className="flex flex-col">
           <h1 className="text font-bold text-2xl">
             {filteredTransactions.length} Transactions
           </h1>
-          <div className="text-gray-400 text-sm">
+          <p className="text-gray-400 text-sm">
             {filters.selectedPeriod
               ? `Your transactions for ${filters.selectedPeriod.toLowerCase()}`
               : filters.startDate || filters.endDate
               ? "Your filtered transactions"
               : "Your transactions for the last 7 days"}
-          </div>
-        </aside>
+          </p>
+        </div>
 
-        <aside className="flex gap-3">
+        <div className="flex gap-3">
           <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
             <SheetTrigger onClick={() => setIsFilterOpen(true)} asChild>
               <button className="w-[107px] py-3 rounded-full bg-gray-50 text-base font-semibold flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer">
@@ -267,7 +270,7 @@ export default function TransactionsTable() {
               <DownloadIcon className="w-full h-full" />
             </figure>
           </button>
-        </aside>
+        </div>
       </header>
 
       {displayTransactions.length === 0 ? (
@@ -276,10 +279,10 @@ export default function TransactionsTable() {
           style={{ minHeight: "400px" }}
         >
           <div className="text-center">
-            <div className="text-gray-400 text-base font-medium mb-2">
+            <p className="text-gray-400 text-base font-medium mb-2">
               No transactions found
-            </div>
-            <div className="text-gray-400 text-sm">
+            </p>
+            <p className="text-gray-400 text-sm">
               {filters.selectedPeriod ||
               filters.startDate ||
               filters.endDate ||
@@ -287,7 +290,7 @@ export default function TransactionsTable() {
               filters.transactionStatuses.length > 0
                 ? "Try adjusting your filters to see more results"
                 : "There are no transactions to display"}
-            </div>
+            </p>
           </div>
         </div>
       ) : (
@@ -305,11 +308,11 @@ export default function TransactionsTable() {
                 >
                   <td className="align-middle pb-6">
                     <div className="flex items-center gap-x-[14.5px]">
-                      <div
+                      <figure
                         className={`w-12 h-12 rounded-full flex items-center justify-center ${bgColor}`}
                       >
                         <Icon className="w-3 h-3" />
-                      </div>
+                      </figure>
                       <div className="flex flex-col gap-y-[9px]">
                         <span className="text-black-300 text-base font-medium leading-[24px] tracking-[-0.2px]">
                           {transaction.title}
@@ -337,9 +340,9 @@ export default function TransactionsTable() {
                     <div className="text-base font-bold leading-[24px] tracking-[-0.4px] text-black-300">
                       {formatCurrency(transaction.amount)}
                     </div>
-                    <div className="text-sm font-medium leading-4 tracking-[-0.2px] text-gray-400 mt-1">
+                    <time className="text-sm font-medium leading-4 tracking-[-0.2px] text-gray-400 mt-1">
                       {formatDate(transaction.date)}
-                    </div>
+                    </time>
                   </td>
                 </tr>
               );
@@ -347,6 +350,6 @@ export default function TransactionsTable() {
           </tbody>
         </table>
       )}
-    </div>
+    </section>
   );
 }

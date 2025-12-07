@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, createContext } from "react";
+import React, { useEffect, useState, useRef, createContext } from "react";
 import CloseIcon from "../../assets/icons/close.svg?react";
 
 const SheetContainerContext = createContext<HTMLDivElement | null>(null);
@@ -38,8 +38,23 @@ export function Sheet({ open, children }: SheetProps) {
   return <>{children}</>;
 }
 
-export function SheetTrigger({ children, onClick }: SheetTriggerProps) {
-  return <div onClick={onClick}>{children}</div>;
+export function SheetTrigger({
+  children,
+  onClick,
+  asChild,
+}: SheetTriggerProps) {
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, { onClick } as any);
+  }
+  return (
+    <button
+      onClick={onClick}
+      type="button"
+      className="border-none bg-transparent p-0"
+    >
+      {children}
+    </button>
+  );
 }
 
 export function SheetContent({
@@ -159,7 +174,7 @@ export function SheetHeader({
   onClose?: () => void;
 }) {
   return (
-    <div className="pb-5 flex items-center justify-between">
+    <header className="pb-5 flex items-center justify-between">
       {children}
       {onClose && (
         <button
@@ -170,13 +185,14 @@ export function SheetHeader({
             height: "24px",
             padding: "5.7px",
           }}
+          aria-label="Close"
         >
           <figure className="w-full h-full flex items-center justify-center">
             <CloseIcon className="w-full h-full" />
           </figure>
         </button>
       )}
-    </div>
+    </header>
   );
 }
 
@@ -199,5 +215,13 @@ export function SheetClose({
   children: React.ReactNode;
   onClick?: () => void;
 }) {
-  return <div onClick={onClick}>{children}</div>;
+  return (
+    <button
+      onClick={onClick}
+      type="button"
+      className="border-none bg-transparent p-0"
+    >
+      {children}
+    </button>
+  );
 }

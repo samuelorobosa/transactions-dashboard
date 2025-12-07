@@ -5,10 +5,10 @@ import ChartSection from "./components/organisms/ChartSection";
 export default function App() {
   return (
     <MainLayout>
-      <div className="w-full h-full">
+      <main className="w-full h-full">
         <ChartSection />
         <TransactionsTable />
-      </div>
+      </main>
     </MainLayout>
   );
 }

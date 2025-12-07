@@ -42,10 +42,10 @@ export default function ChartSection() {
 
   if (isLoading || !walletData) {
     return (
-      <div className="flex gap-[124px] mb-[82px] mt-16">
+      <section className="flex gap-[124px] mb-[82px] mt-16">
         <div className="flex-1">
           <div className="flex flex-col gap-8">
-            <div className="flex gap-x-16 items-center">
+            <header className="flex gap-x-16 items-center">
               <div className="flex flex-col gap-y-2">
                 <Skeleton width={120} height={16} className="mb-2" />
                 <Skeleton width={200} height={48} />
@@ -56,13 +56,13 @@ export default function ChartSection() {
                 variant="rectangular"
                 className="rounded-full"
               />
-            </div>
+            </header>
             {/* Chart skeleton */}
             <Skeleton width="100%" height={300} variant="rectangular" />
           </div>
         </div>
-        <div className="w-[271px]">
-          <div className="flex flex-col gap-8">
+        <aside className="w-[271px]">
+          <dl className="flex flex-col gap-8">
             {[1, 2, 3, 4].map((index) => (
               <div key={index} className="flex flex-col gap-y-2">
                 <div className="flex justify-between items-center">
@@ -72,9 +72,9 @@ export default function ChartSection() {
                 <Skeleton width={180} height={32} />
               </div>
             ))}
-          </div>
-        </div>
-      </div>
+          </dl>
+        </aside>
+      </section>
     );
   }
 
@@ -94,10 +94,10 @@ export default function ChartSection() {
   const chartData = transactions ? prepareChartData(transactions) : [];
 
   return (
-    <div className="flex gap-[124px] mb-[82px] mt-16">
+    <section className="flex gap-[124px] mb-[82px] mt-16">
       <div className="flex-1">
         <div className="flex flex-col gap-8">
-          <div className="flex gap-x-16 items-center">
+          <header className="flex gap-x-16 items-center">
             <div className="flex flex-col gap-y-2">
               <span className="text-sm text-gray-400">Available Balance</span>
               <span className="font-bold text-4xl leading-[48px] tracking-[-1.5px] text-black-300">
@@ -107,9 +107,9 @@ export default function ChartSection() {
             <button className="w-[167px] cursor-pointer h-[52px] rounded-full bg-black-300 text-white text-sm font-semibold leading-4 tracking-[-0.2px]">
               Withdraw
             </button>
-          </div>
+          </header>
           {chartData.length > 0 && (
-            <div className="w-full h-[300px]">
+            <figure className="w-full h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData} margin={{ top: 15 }}>
                   <YAxis
@@ -145,27 +145,27 @@ export default function ChartSection() {
                   />
                 </LineChart>
               </ResponsiveContainer>
-            </div>
+            </figure>
           )}
         </div>
       </div>
-      <div className="w-[271px]">
-        <div className="flex flex-col gap-8">
+      <aside className="w-[271px]">
+        <dl className="flex flex-col gap-8">
           {balanceItems.map((item, index) => (
             <div key={index} className="flex flex-col gap-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-sm font-medium leading-4 tracking-[-0.2px]">
+                <dt className="text-gray-400 text-sm font-medium leading-4 tracking-[-0.2px]">
                   {item.label}
-                </span>
+                </dt>
                 <InfoIcon />
               </div>
-              <div className="text-black-300 text-[28px] font-bold leading-[32px] tracking-[-0.6px]">
+              <dd className="text-black-300 text-[28px] font-bold leading-[32px] tracking-[-0.6px]">
                 {item.value}
-              </div>
+              </dd>
             </div>
           ))}
-        </div>
-      </div>
-    </div>
+        </dl>
+      </aside>
+    </section>
   );
 }

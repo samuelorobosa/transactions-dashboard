@@ -119,7 +119,7 @@ export function CustomSelect({
         </figure>
       </button>
       {isMounted && (
-        <div
+        <ul
           className={`absolute z-50 w-full bg-white rounded-lg transition-all duration-200 ease-in-out ${
             isAnimating
               ? isOpen
@@ -133,14 +133,17 @@ export function CustomSelect({
               "0px 6px 12px 0px rgba(92, 115, 131, 0.08), 0px 4px 8px 0px rgba(92, 115, 131, 0.08)",
             padding: "8px",
           }}
+          role="listbox"
         >
           {options.map((option) => {
             const isChecked = selectedValues.includes(option.value);
             return (
-              <div
+              <li
                 key={option.value}
                 onClick={() => handleOptionClick(option.value)}
-                className="flex items-center cursor-pointer hover:bg-gray-50 rounded-md transition-colors p-[14px] gap-3"
+                className="flex items-center cursor-pointer hover:bg-gray-50 rounded-md transition-colors p-[14px] gap-3 list-none"
+                role="option"
+                aria-selected={isChecked}
               >
                 <div
                   className={`flex items-center justify-center w-5 h-5 rounded ${
@@ -179,10 +182,10 @@ export function CustomSelect({
                 >
                   {option.label}
                 </span>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       )}
     </div>
   );

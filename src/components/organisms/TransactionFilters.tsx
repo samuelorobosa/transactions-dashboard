@@ -13,7 +13,10 @@ export function TransactionDateFilters({
   const periods = ["Today", "Last 7 days", "This month", "Last 3 months"];
 
   return (
-    <div className="flex justify-between gap-3">
+    <nav
+      className="flex justify-between gap-3"
+      aria-label="Date period filters"
+    >
       {periods.map((period) => {
         const isSelected = selectedPeriod === period;
         return (
@@ -30,7 +33,7 @@ export function TransactionDateFilters({
           </button>
         );
       })}
-    </div>
+    </nav>
   );
 }
 
@@ -56,17 +59,17 @@ export function TransactionFilterForm({
   onTransactionStatusChange?: (statuses: string[]) => void;
 }) {
   return (
-    <>
+    <form>
       <DateRangePicker
         startDate={startDate}
         endDate={endDate}
         onStartDateChange={onStartDateChange}
         onEndDateChange={onEndDateChange}
       />
-      <div className="mt-6">
-        <label className="font-semibold text-base leading-6 tracking-[-0.4px] align-middle text-black-300 block mb-3">
+      <fieldset className="mt-6">
+        <legend className="font-semibold text-base leading-6 tracking-[-0.4px] align-middle text-black-300 block mb-3">
           Transaction Type
-        </label>
+        </legend>
         <div className="mt-3">
           <TransactionTypeSelect
             transactions={transactions}
@@ -74,19 +77,19 @@ export function TransactionFilterForm({
             onChange={onTransactionTypeChange}
           />
         </div>
-      </div>
-      <div className="mt-6">
-        <label className="font-semibold text-base leading-6 tracking-[-0.4px] align-middle text-black-300 block mb-3">
+      </fieldset>
+      <fieldset className="mt-6">
+        <legend className="font-semibold text-base leading-6 tracking-[-0.4px] align-middle text-black-300 block mb-3">
           Transaction Status
-        </label>
+        </legend>
         <div className="mt-3">
           <TransactionStatusSelect
             value={transactionStatuses}
             onChange={onTransactionStatusChange}
           />
         </div>
-      </div>
-    </>
+      </fieldset>
+    </form>
   );
 }
 

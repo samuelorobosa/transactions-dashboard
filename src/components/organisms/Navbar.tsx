@@ -31,7 +31,7 @@ export default function Navbar() {
   const [isLinkInBioAnimating, setIsLinkInBioAnimating] = useState(false);
   const [isLinkInBioMounted, setIsLinkInBioMounted] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
-  const appsRef = useRef<HTMLDivElement>(null);
+  const appsRef = useRef<HTMLLIElement>(null);
   const linkInBioMenuRef = useRef<HTMLDivElement>(null);
 
   const profileMenuOptions = [
@@ -212,15 +212,15 @@ export default function Navbar() {
 
   return (
     <nav className="w-full h-16 bg-white border-2 border-white rounded-[100px] shadow-[0px_2px_4px_0px_rgba(45,59,67,0.051),0px_2px_6px_0px_rgba(45,59,67,0.059)] flex items-center justify-between p-3">
-      <div className="flex items-center">
+      <header className="flex items-center">
         <img src={mainstackLogo} alt="Mainstack Logo" className="w-9 h-9" />
-      </div>
+      </header>
 
-      <div className="flex items-center gap-6">
+      <ul className="flex items-center gap-6 list-none">
         {navLinks.map((link) => {
           if (link.name === "Apps") {
             return (
-              <div key={link.name} ref={appsRef} className="relative">
+              <li key={link.name} ref={appsRef} className="relative">
                 {isAppsExpanded ? (
                   <div className="relative" ref={linkInBioMenuRef}>
                     <div className="flex items-center bg-black-300 rounded-full overflow-hidden h-10">
@@ -238,7 +238,7 @@ export default function Navbar() {
                       </button>
                     </div>
                     {isLinkInBioMounted && (
-                      <div
+                      <menu
                         className={`absolute right-0 top-[calc(100%+8px)] z-50 w-[360px] bg-white rounded-lg transition-all duration-200 ease-in-out p-2 shadow-[0px_6px_12px_0px_rgba(92,115,131,0.08),0px_4px_8px_0px_rgba(92,115,131,0.08)] ${
                           isLinkInBioAnimating
                             ? isLinkInBioMenuOpen
@@ -250,14 +250,14 @@ export default function Navbar() {
                         {linkInBioMenuOptions.map((option, index) => {
                           const Icon = option.icon;
                           return (
-                            <div
+                            <li
                               key={index}
                               onClick={handleLinkInBioOptionClick}
-                              className="flex items-center cursor-pointer rounded-md transition-all p-[14px] gap-3 hover:shadow-sm mb-2 last:mb-0 group"
+                              className="flex items-center cursor-pointer rounded-md transition-all p-[14px] gap-3 hover:shadow-sm mb-2 last:mb-0 group list-none"
                             >
-                              <div className="w-8 h-8 rounded-md border border-gray-200 flex items-center justify-center">
+                              <figure className="w-8 h-8 rounded-md border border-gray-200 flex items-center justify-center">
                                 <Icon className="w-5 h-5" />
-                              </div>
+                              </figure>
                               <div className="flex flex-col flex-1">
                                 <span className="font-medium text-sm leading-6 tracking-[-0.4px] text-black-300">
                                   {option.title}
@@ -267,16 +267,16 @@ export default function Navbar() {
                                 </span>
                               </div>
                               <IoChevronForward className="w-3 h-3 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </div>
+                            </li>
                           );
                         })}
-                      </div>
+                      </menu>
                     )}
                   </div>
                 ) : (
                   <button
                     onClick={handleAppsClick}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full group ${
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full group cursor-pointer ${
                       getLinkStyle(link.name).link
                     }`}
                   >
@@ -286,22 +286,23 @@ export default function Navbar() {
                     <span className="leading-6">{link.name}</span>
                   </button>
                 )}
-              </div>
+              </li>
             );
           }
           const style = getLinkStyle(link.name);
           return (
-            <a
-              key={link.name}
-              href="#"
-              className={`flex items-center gap-2 px-4 py-2 rounded-full group ${style.link}`}
-            >
-              <link.icon className={`w-5 h-5 ${style.icon}`} />
-              <span className="leading-6">{link.name}</span>
-            </a>
+            <li key={link.name}>
+              <a
+                href="#"
+                className={`flex items-center gap-2 px-4 py-2 rounded-full group ${style.link}`}
+              >
+                <link.icon className={`w-5 h-5 ${style.icon}`} />
+                <span className="leading-6">{link.name}</span>
+              </a>
+            </li>
           );
         })}
-      </div>
+      </ul>
 
       <div className="flex items-center gap-4">
         <button className="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full">
@@ -321,19 +322,19 @@ export default function Navbar() {
           />
         ) : userData ? (
           <div className="relative" ref={profileMenuRef}>
-            <div
+            <button
               onClick={handleProfileMenuToggle}
-              className="w-[81px] bg-profile-bg cursor-pointer rounded-[100px] py-1 px-[5px] flex items-center gap-x-2"
+              className="w-[81px] bg-profile-bg cursor-pointer rounded-[100px] py-1 px-[5px] flex items-center gap-x-2 border-none"
             >
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold bg-profile-gradient">
+              <figure className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold bg-profile-gradient">
                 <span className="text-profile-gradient">
                   {getUserInitials(userData)}
                 </span>
-              </div>
+              </figure>
               <MenuIcon className="w-6 h-6 fill-gray-400" />
-            </div>
+            </button>
             {isMounted && (
-              <div
+              <menu
                 className={`absolute right-0 top-[calc(100%+8px)] z-50 w-[360px] bg-white rounded-lg transition-all duration-200 ease-in-out p-2 shadow-[0px_6px_12px_0px_rgba(92,115,131,0.08),0px_4px_8px_0px_rgba(92,115,131,0.08)] ${
                   isAnimating
                     ? isProfileMenuOpen
@@ -343,11 +344,11 @@ export default function Navbar() {
                 }`}
               >
                 <div className="flex items-center gap-3 p-[14px]">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold bg-profile-gradient">
+                  <figure className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold bg-profile-gradient">
                     <span className="text-profile-gradient">
                       {getUserInitials(userData)}
                     </span>
-                  </div>
+                  </figure>
                   <div className="flex flex-col">
                     <span className="font-semibold text-base leading-6 tracking-[-0.4px] text-black-300">
                       {userData.first_name} {userData.last_name}
@@ -360,19 +361,19 @@ export default function Navbar() {
                 {profileMenuOptions.map((option) => {
                   const Icon = option.icon;
                   return (
-                    <div
+                    <li
                       key={option.name}
                       onClick={handleMenuOptionClick}
-                      className="flex items-center cursor-pointer hover:bg-gray-50 rounded-md transition-colors p-[14px] gap-3"
+                      className="flex items-center cursor-pointer hover:bg-gray-50 rounded-md transition-colors p-[14px] gap-3 list-none"
                     >
                       {Icon && <Icon className="w-5 h-5 text-gray-400" />}
                       <span className="font-medium text-sm leading-6 tracking-[-0.4px] text-black-300">
                         {option.name}
                       </span>
-                    </div>
+                    </li>
                   );
                 })}
-              </div>
+              </menu>
             )}
           </div>
         ) : null}

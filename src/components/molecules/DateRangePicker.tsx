@@ -23,7 +23,7 @@ export function DateRangePicker({
   );
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectingStart, setSelectingStart] = useState(true);
-  const calendarRef = useRef<HTMLDivElement>(null);
+  const calendarRef = useRef<HTMLFieldSetElement>(null);
 
   useEffect(() => {
     if (startDate) {
@@ -121,10 +121,10 @@ export function DateRangePicker({
   };
 
   return (
-    <div className="mt-6 relative" ref={calendarRef}>
-      <label className="font-semibold text-base leading-6 tracking-[-0.4px] align-middle text-black-300 block mb-3">
+    <fieldset className="mt-6 relative" ref={calendarRef}>
+      <legend className="font-semibold text-base leading-6 tracking-[-0.4px] align-middle text-black-300 block mb-3">
         Date Range
-      </label>
+      </legend>
       <div className="flex flex-row gap-1.5 relative">
         <button
           type="button"
@@ -162,6 +162,6 @@ export function DateRangePicker({
           />
         </div>
       )}
-    </div>
+    </fieldset>
   );
 }
