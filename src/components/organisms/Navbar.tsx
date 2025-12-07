@@ -1,15 +1,15 @@
-import mainstackLogo from "../assets/logos/mainstack-logo.svg";
-import HomeIcon from "../assets/icons/home.svg?react";
-import AnalyticsIcon from "../assets/icons/analytics.svg?react";
-import RevenueIcon from "../assets/icons/revenue.svg?react";
-import CrmIcon from "../assets/icons/crm.svg?react";
-import AppsIcon from "../assets/icons/apps.svg?react";
-import NotificationsIcon from "../assets/icons/notifications.svg?react";
-import ChatIcon from "../assets/icons/chat.svg?react";
-import MenuIcon from "../assets/icons/menu.svg?react";
-import { useUser } from "../queries/revenue.queries";
-import { getUserInitials } from "../utils";
-import Skeleton from "./Skeleton";
+import mainstackLogo from "../../assets/logos/mainstack-logo.svg";
+import HomeIcon from "../../assets/icons/home.svg?react";
+import AnalyticsIcon from "../../assets/icons/analytics.svg?react";
+import RevenueIcon from "../../assets/icons/revenue.svg?react";
+import CrmIcon from "../../assets/icons/crm.svg?react";
+import AppsIcon from "../../assets/icons/apps.svg?react";
+import NotificationsIcon from "../../assets/icons/notifications.svg?react";
+import ChatIcon from "../../assets/icons/chat.svg?react";
+import MenuIcon from "../../assets/icons/menu.svg?react";
+import { useUser } from "../../queries/revenue.queries";
+import { getUserInitials } from "../../utils";
+import Skeleton from "../atoms/Skeleton";
 
 export default function Navbar() {
   const { data: userData, isLoading: userLoading } = useUser();

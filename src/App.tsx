@@ -1,6 +1,6 @@
 import MainLayout from "./layout/MainLayout";
-import TransactionsTable from "./components/TransactionsTable";
-import ChartSection from "./components/ChartSection";
+import TransactionsTable from "./components/organisms/TransactionsTable";
+import ChartSection from "./components/organisms/ChartSection";
 
 export default function App() {
   return (

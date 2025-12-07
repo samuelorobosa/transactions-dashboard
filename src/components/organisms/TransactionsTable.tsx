@@ -1,15 +1,15 @@
 import { useState } from "react";
-import ChevronDownIcon from "../assets/icons/chevron-down.svg?react";
-import DownloadIcon from "../assets/icons/download.svg?react";
-import { useTransactions } from "../queries/revenue.queries";
+import ChevronDownIcon from "../../assets/icons/chevron-down.svg?react";
+import DownloadIcon from "../../assets/icons/download.svg?react";
+import { useTransactions } from "../../queries/revenue.queries";
 import {
   formatDate,
   formatCurrency,
   transformTransactions,
   TRANSACTION_TYPE_CONFIG,
   exportTransactionsToCsv,
-} from "../utils";
-import Skeleton from "./Skeleton";
+} from "../../utils";
+import Skeleton from "../atoms/Skeleton";
 import {
   Sheet,
   SheetContent,
@@ -18,6 +18,7 @@ import {
   SheetDescription,
   SheetTrigger,
   SheetDateFilters,
+  FilterForm,
 } from "./Sheet";
 
 export default function TransactionsTable() {
@@ -113,6 +114,15 @@ export default function TransactionsTable() {
               <SheetDateFilters
                 onPeriodChange={(period) => {
                   console.log("Selected period:", period);
+                }}
+              />
+              <FilterForm
+                transactions={transactions}
+                onStartDateChange={(date) => {
+                  console.log("Start date:", date);
+                }}
+                onEndDateChange={(date) => {
+                  console.log("End date:", date);
                 }}
               />
             </SheetContent>

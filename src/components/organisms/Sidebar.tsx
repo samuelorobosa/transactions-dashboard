@@ -1,7 +1,7 @@
-import LinkInBioIcon from "../assets/icons/link-in-bio.svg?react";
-import StoreIcon from "../assets/icons/store.svg?react";
-import MediaKitIcon from "../assets/icons/media-kit.svg?react";
-import InvoicingIcon from "../assets/icons/invoicing.svg?react";
+import LinkInBioIcon from "../../assets/icons/link-in-bio.svg?react";
+import StoreIcon from "../../assets/icons/store.svg?react";
+import MediaKitIcon from "../../assets/icons/media-kit.svg?react";
+import InvoicingIcon from "../../assets/icons/invoicing.svg?react";
 
 export default function Sidebar() {
   const sidebarItems = [

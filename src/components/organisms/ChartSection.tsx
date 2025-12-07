@@ -1,7 +1,7 @@
-import InfoIcon from "../assets/icons/info.svg?react";
-import { useWallet } from "../queries/revenue.queries";
-import { useTransactions } from "../queries/revenue.queries";
-import { formatCurrency, prepareChartData } from "../utils";
+import InfoIcon from "../../assets/icons/info.svg?react";
+import { useWallet } from "../../queries/revenue.queries";
+import { useTransactions } from "../../queries/revenue.queries";
+import { formatCurrency, prepareChartData } from "../../utils";
 import {
   LineChart,
   Line,
@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import Skeleton from "./Skeleton";
+import Skeleton from "../atoms/Skeleton";
 
 const CustomXAxisTick = ({ x, y, payload }: any) => {
   return (

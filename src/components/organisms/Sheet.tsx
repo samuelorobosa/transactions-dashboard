@@ -1,5 +1,10 @@
-import { useEffect, useState } from "react";
-import CloseIcon from "../assets/icons/close.svg?react";
+import { useEffect, useState, useRef, createContext } from "react";
+import CloseIcon from "../../assets/icons/close.svg?react";
+import { DateRangePicker } from "../molecules/DateRangePicker";
+import { TransactionTypeSelect } from "../molecules/TransactionTypeSelect";
+import type { Transaction } from "../../types/app";
+
+const SheetContainerContext = createContext<HTMLDivElement | null>(null);
 
 interface SheetProps {
   open: boolean;
@@ -12,6 +17,7 @@ interface SheetContentProps {
   side?: "top" | "right" | "bottom" | "left";
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  className?: string;
 }
 
 interface SheetTriggerProps {
@@ -44,9 +50,11 @@ export function SheetContent({
   side = "right",
   open,
   onOpenChange,
+  className = "",
 }: SheetContentProps) {
   const [isMounted, setIsMounted] = useState(open);
   const [isAnimating, setIsAnimating] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (open) {
@@ -102,6 +110,7 @@ export function SheetContent({
         }}
       />
       <div
+        ref={containerRef}
         className={`fixed z-50 bg-white transition-transform duration-300 ease-in-out ${
           side === "right"
             ? ""
@@ -113,7 +122,6 @@ export function SheetContent({
         }`}
         style={{
           backgroundColor: "#FFFFFF",
-          padding: "20px 24px",
           borderRadius: "20px",
           boxShadow:
             "0px 8px 16px 4px rgba(188, 196, 204, 0.1), 0px 12px 24px 0px rgba(219, 222, 229, 0.1), 0px 16px 32px 0px rgba(219, 222, 229, 0.1)",
@@ -135,9 +143,12 @@ export function SheetContent({
               ? "8px"
               : "auto",
           transform: getTransform(),
+          overflow: "visible",
         }}
       >
-        {children}
+        <SheetContainerContext.Provider value={containerRef.current}>
+          <div className={className || "py-5 px-6"}>{children}</div>
+        </SheetContainerContext.Provider>
       </div>
     </>
   );
@@ -215,5 +226,38 @@ export function SheetDateFilters({
         </button>
       ))}
     </div>
+  );
+}
+
+export function FilterForm({
+  startDate,
+  endDate,
+  onStartDateChange,
+  onEndDateChange,
+  transactions,
+}: {
+  startDate?: string;
+  endDate?: string;
+  onStartDateChange?: (date: string) => void;
+  onEndDateChange?: (date: string) => void;
+  transactions?: Transaction[];
+}) {
+  return (
+    <>
+      <DateRangePicker
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={onStartDateChange}
+        onEndDateChange={onEndDateChange}
+      />
+      <div className="mt-6">
+        <label className="font-semibold text-base leading-6 tracking-[-0.4px] align-middle text-black-300 block mb-3">
+          Transaction Type
+        </label>
+        <div className="mt-3">
+          <TransactionTypeSelect transactions={transactions} />
+        </div>
+      </div>
+    </>
   );
 }

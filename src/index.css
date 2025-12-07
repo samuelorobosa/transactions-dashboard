@@ -76,3 +76,275 @@
       0px 4px 8px 0px rgba(92, 115, 131, 0.078);
   }
 }
+
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: rgba(19, 19, 22, 1);
+  --rdp-background-color: transparent;
+  --rdp-accent-color-dark: rgba(19, 19, 22, 1);
+  --rdp-background-color-dark: transparent;
+  --rdp-outline: 2px solid var(--rdp-accent-color);
+  --rdp-outline-selected: 2px solid var(--rdp-accent-color);
+  margin: 0;
+}
+
+.rdp-month {
+  display: block !important;
+}
+
+.rdp-month_table {
+  display: table !important;
+  width: 100% !important;
+}
+
+.rdp-weekdays {
+  display: table-header-group !important;
+}
+
+.rdp-weekday {
+  display: table-cell !important;
+}
+
+.rdp-week {
+  display: table-row !important;
+}
+
+.rdp-table {
+  display: table !important;
+  width: 100% !important;
+  border-collapse: collapse !important;
+  table-layout: fixed !important;
+}
+
+.calendar {
+  background: #ffffff !important;
+  border: none !important;
+  border-radius: 16.85px !important;
+  padding: 33.7px !important;
+  box-shadow: 0px 6px 12px 0px rgba(92, 115, 131, 0.08),
+    0px 4px 8px 0px rgba(92, 115, 131, 0.08) !important;
+  font-family: "Degular", sans-serif !important;
+}
+
+.rdp-day {
+  font-family: "Degular", sans-serif !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
+  font-size: 11.8px !important;
+  line-height: 13.48px !important;
+  letter-spacing: -0.34px !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  color: rgba(19, 19, 22, 1) !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 2px !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.rdp-day_selected,
+.rdp-day_selected:focus-visible,
+.rdp-day_selected.rdp-day_selected {
+  color: #ffffff !important;
+  background: rgba(19, 19, 22, 1) !important;
+  width: 32.016361236572266px !important;
+  height: 32.016361236572266px !important;
+  padding: 7.58px 5.06px !important;
+  border-radius: 84.25px !important;
+  font-family: "Degular", sans-serif !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
+  font-size: 11.8px !important;
+  line-height: 13.48px !important;
+  letter-spacing: -0.34px !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  opacity: 1 !important;
+}
+
+.rdp-day:hover:not(.rdp-day_disabled):not(.rdp-day_selected) {
+  border-radius: 84.25px !important;
+  background: rgba(239, 241, 246, 0.5) !important;
+}
+
+.rdp-day_today {
+  font-weight: 600 !important;
+}
+
+.rdp-day_outside {
+  color: #ccc !important;
+  opacity: 0.5 !important;
+}
+
+.rdp-day_disabled {
+  color: #ccc !important;
+  cursor: not-allowed !important;
+  opacity: 0.5 !important;
+}
+
+.rdp-head_row,
+.calendar-head-row {
+  display: table-row !important;
+}
+
+.rdp-head_cell,
+.calendar-head-cell {
+  display: table-cell !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  padding: 8px 4px !important;
+  width: calc(100% / 7) !important;
+  font-family: "Degular", sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  color: #56616b !important;
+}
+
+.rdp-row,
+.calendar-row {
+  display: table-row !important;
+}
+
+.rdp-cell,
+.calendar-cell {
+  display: table-cell !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  padding: 4px !important;
+  width: calc(100% / 7) !important;
+  height: 40px !important;
+}
+
+.rdp-caption {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 14px !important;
+  width: 100% !important;
+}
+
+.rdp-caption_label {
+  font-family: "Degular", sans-serif !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
+  font-size: 13.48px !important;
+  line-height: 150% !important;
+  letter-spacing: -0.34px !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  color: rgba(19, 19, 22, 1) !important;
+  flex: 1 !important;
+  margin: 0 !important;
+}
+
+.rdp-nav {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.rdp-button_previous {
+  background: transparent !important;
+  border: none !important;
+  padding: 8px 4px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  flex-shrink: 0 !important;
+}
+
+.rdp-button_next {
+  background: transparent !important;
+  border: none !important;
+  padding: 8px 4px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  flex-shrink: 0 !important;
+}
+
+.rdp-button_previous svg,
+.rdp-button_next svg {
+  color: rgba(19, 19, 22, 1) !important;
+  fill: rgba(19, 19, 22, 1) !important;
+  width: 8px !important;
+  height: 16px !important;
+}
+
+.rdp-button_previous:hover,
+.rdp-button_next:hover {
+  opacity: 0.7 !important;
+}
+
+.calendar-day {
+  font-family: "Degular", sans-serif !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
+  font-size: 11.8px !important;
+  line-height: 13.48px !important;
+  letter-spacing: -0.34px !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  color: rgba(19, 19, 22, 1) !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 2px !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.calendar-day-selected {
+  color: #ffffff !important;
+  background: rgba(19, 19, 22, 1) !important;
+  width: 32.016361236572266px !important;
+  height: 32.016361236572266px !important;
+  padding: 7.58px 5.06px !important;
+  border-radius: 84.25px !important;
+  font-family: "Degular", sans-serif !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
+  font-size: 11.8px !important;
+  line-height: 13.48px !important;
+  letter-spacing: -0.34px !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.calendar-day:hover {
+  border-radius: 84.25px !important;
+}
+
+.calendar-day-today {
+  font-weight: 600 !important;
+}
+
+.calendar-day-outside {
+  color: #ccc !important;
+  opacity: 0.5 !important;
+}
+
+.calendar-day-disabled {
+  color: #ccc !important;
+  cursor: not-allowed !important;
+  opacity: 0.5 !important;
+}
