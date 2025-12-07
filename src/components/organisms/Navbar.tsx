@@ -16,7 +16,7 @@ import InvoicingIcon from "../../assets/icons/invoicing.svg?react";
 import { CiSettings, CiLogout } from "react-icons/ci";
 import { GoBug } from "react-icons/go";
 import { MdSwitchAccount, MdCardGiftcard } from "react-icons/md";
-import { IoReceiptOutline } from "react-icons/io5";
+import { IoReceiptOutline, IoChevronForward } from "react-icons/io5";
 import { useUser } from "../../queries/revenue.queries";
 import { getUserInitials } from "../../utils";
 import Skeleton from "../atoms/Skeleton";
@@ -237,7 +237,7 @@ export default function Navbar() {
                         className="flex items-center gap-2 px-4 py-2 h-full text-white transition-colors hover:bg-black-300/90"
                       >
                         <span className="leading-6">Link In Bio</span>
-                        <ChevronDownIcon className="w-4 h-4 ml-1 text-white [&>path]:fill-white" />
+                        <ChevronDownIcon className="w-3 h-3 ml-1 text-white [&>path]:fill-white" />
                       </button>
                     </div>
                     {isLinkInBioMounted && (
@@ -258,12 +258,12 @@ export default function Navbar() {
                               onClick={() =>
                                 handleLinkInBioOptionClick(option.title)
                               }
-                              className="flex items-center cursor-pointer rounded-md transition-all p-[14px] gap-3 hover:border hover:border-gray-200 hover:shadow-sm mb-2 last:mb-0"
+                              className="flex items-center cursor-pointer rounded-md transition-all p-[14px] gap-3 hover:shadow-sm mb-2 last:mb-0 group"
                             >
-                              <div className="w-8 h-8 rounded border border-gray-200 flex items-center justify-center">
+                              <div className="w-8 h-8 rounded-md border border-gray-200 flex items-center justify-center">
                                 <Icon className="w-5 h-5" />
                               </div>
-                              <div className="flex flex-col">
+                              <div className="flex flex-col flex-1">
                                 <span className="font-medium text-sm leading-6 tracking-[-0.4px] text-black-300">
                                   {option.title}
                                 </span>
@@ -271,6 +271,7 @@ export default function Navbar() {
                                   {option.description}
                                 </span>
                               </div>
+                              <IoChevronForward className="w-3 h-3 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
                           );
                         })}
