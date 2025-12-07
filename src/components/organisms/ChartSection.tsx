@@ -57,7 +57,6 @@ export default function ChartSection() {
                 className="rounded-full"
               />
             </header>
-            {/* Chart skeleton */}
             <Skeleton width="100%" height={300} variant="rectangular" />
           </div>
         </div>
