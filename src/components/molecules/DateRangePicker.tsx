@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Calendar } from "./Calendar";
+import ChevronDownIcon from "../../assets/icons/chevron-down.svg?react";
 
 interface DateRangePickerProps {
   startDate?: string;
@@ -23,7 +24,6 @@ export function DateRangePicker({
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectingStart, setSelectingStart] = useState(true);
 
-  // Sync internal state with external props
   useEffect(() => {
     if (startDate) {
       setStartDateValue(new Date(startDate));
@@ -96,28 +96,32 @@ export function DateRangePicker({
   };
 
   return (
-    <div className="mt-6">
+    <div className="mt-6 relative">
       <label className="font-semibold text-base leading-6 tracking-[-0.4px] align-middle text-black-300 block mb-3">
         Date Range
       </label>
-      <div className="flex gap-1.5 relative">
+      <div className="flex flex-row gap-1.5 relative">
         <button
           type="button"
           onClick={handleStartClick}
-          className="flex-1 h-12 rounded-lg border border-gray-50 px-4 text-left text-sm text-black-300 hover:bg-gray-50 transition-colors cursor-pointer focus:outline-none focus:border-[3px] focus:border-black-300"
+          className="flex-1 min-w-0 h-12 rounded-lg border border-gray-50 px-4 text-left text-sm text-black-300 hover:bg-gray-50 transition-colors cursor-pointer focus:outline-none focus:border-[3px] focus:border-black-300 flex items-center justify-between"
         >
-          {startDateValue ? formatDate(startDateValue) : "Start Date"}
+          <span>
+            {startDateValue ? formatDate(startDateValue) : "Start Date"}
+          </span>
+          <ChevronDownIcon className="w-2.5 h-2.5 text-gray-400 flex-shrink-0" />
         </button>
         <button
           type="button"
           onClick={handleEndClick}
-          className="flex-1 h-12 rounded-lg border border-gray-50 px-4 text-left text-sm text-black-300 hover:bg-gray-50 transition-colors cursor-pointer focus:outline-none focus:border-[3px] focus:border-black-300"
+          className="flex-1 min-w-0 h-12 rounded-lg border border-gray-50 px-4 text-left text-sm text-black-300 hover:bg-gray-50 transition-colors cursor-pointer focus:outline-none focus:border-[3px] focus:border-black-300 flex items-center justify-between"
         >
-          {endDateValue ? formatDate(endDateValue) : "End Date"}
+          <span>{endDateValue ? formatDate(endDateValue) : "End Date"}</span>
+          <ChevronDownIcon className="w-2.5 h-2.5 text-gray-400 flex-shrink-0" />
         </button>
       </div>
       {showCalendar && (
-        <div className="mt-4 w-full">
+        <div className="absolute top-full left-0 right-0 mt-2 z-50">
           <Calendar
             mode="single"
             selected={selectingStart ? startDateValue : endDateValue}

@@ -160,8 +160,7 @@ export default function Navbar() {
     }
   };
 
-  const handleMenuOptionClick = (option: string) => {
-    console.log(`Clicked: ${option}`);
+  const handleMenuOptionClick = () => {
     setIsAnimating(true);
     setTimeout(() => {
       setIsProfileMenuOpen(false);
@@ -190,8 +189,7 @@ export default function Navbar() {
     }
   };
 
-  const handleLinkInBioOptionClick = (option: string) => {
-    console.log(`Clicked: ${option}`);
+  const handleLinkInBioOptionClick = () => {
     setIsLinkInBioAnimating(true);
     setTimeout(() => {
       setIsLinkInBioMenuOpen(false);
@@ -202,7 +200,6 @@ export default function Navbar() {
 
   const handleAppsClick = () => {
     setIsAppsExpanded(true);
-    // Open Link In Bio menu immediately
     setIsLinkInBioMounted(true);
     setIsLinkInBioAnimating(true);
     setIsLinkInBioMenuOpen(true);
@@ -255,9 +252,7 @@ export default function Navbar() {
                           return (
                             <div
                               key={index}
-                              onClick={() =>
-                                handleLinkInBioOptionClick(option.title)
-                              }
+                              onClick={handleLinkInBioOptionClick}
                               className="flex items-center cursor-pointer rounded-md transition-all p-[14px] gap-3 hover:shadow-sm mb-2 last:mb-0 group"
                             >
                               <div className="w-8 h-8 rounded-md border border-gray-200 flex items-center justify-center">
@@ -367,7 +362,7 @@ export default function Navbar() {
                   return (
                     <div
                       key={option.name}
-                      onClick={() => handleMenuOptionClick(option.name)}
+                      onClick={handleMenuOptionClick}
                       className="flex items-center cursor-pointer hover:bg-gray-50 rounded-md transition-colors p-[14px] gap-3"
                     >
                       {Icon && <Icon className="w-5 h-5 text-gray-400" />}

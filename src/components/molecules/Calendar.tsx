@@ -26,8 +26,9 @@ export function Calendar({
       onSelect={onSelect}
       className={`calendar ${className}`}
       classNames={{
-        months: "flex flex-col space-y-4",
-        month: "space-y-4",
+        months: "flex flex-col space-y-3.5 relative",
+        month: "space-y-3.5",
+        month_caption: "rdp-month_caption",
         caption: "rdp-caption",
         caption_label: "rdp-caption_label",
         nav: "rdp-nav",
