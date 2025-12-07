@@ -296,61 +296,61 @@ export default function TransactionsTable() {
           </div>
         </div>
       ) : (
-        <table className="w-full mt-6">
-          <tbody>
-            {displayTransactions.map((transaction, index) => {
-              const { icon: Icon, bgColor } =
-                TRANSACTION_TYPE_CONFIG[transaction.displayType];
-              return (
-                <tr
-                  key={transaction.payment_reference || index}
+      <table className="w-full mt-6">
+        <tbody>
+          {displayTransactions.map((transaction, index) => {
+            const { icon: Icon, bgColor } =
+              TRANSACTION_TYPE_CONFIG[transaction.displayType];
+            return (
+              <tr
+                key={transaction.payment_reference || index}
                   className={
                     index < displayTransactions.length - 1 ? "mb-6" : ""
                   }
-                >
-                  <td className="align-middle pb-6">
-                    <div className="flex items-center gap-x-[14.5px]">
-                      <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center ${bgColor}`}
-                      >
-                        <Icon className="w-3 h-3" />
-                      </div>
-                      <div className="flex flex-col gap-y-[9px]">
-                        <span className="text-black-300 text-base font-medium leading-[24px] tracking-[-0.2px]">
-                          {transaction.title}
+              >
+                <td className="align-middle pb-6">
+                  <div className="flex items-center gap-x-[14.5px]">
+                    <div
+                      className={`w-12 h-12 rounded-full flex items-center justify-center ${bgColor}`}
+                    >
+                      <Icon className="w-3 h-3" />
+                    </div>
+                    <div className="flex flex-col gap-y-[9px]">
+                      <span className="text-black-300 text-base font-medium leading-[24px] tracking-[-0.2px]">
+                        {transaction.title}
+                      </span>
+                      {transaction.displayType === "debit" &&
+                      transaction.status ? (
+                        <span
+                          className={`text-sm font-medium leading-4 tracking-[-0.2px] capitalize ${
+                            transaction.status === "successful"
+                              ? "text-success"
+                              : "text-pending"
+                          }`}
+                        >
+                          {transaction.status}
                         </span>
-                        {transaction.displayType === "debit" &&
-                        transaction.status ? (
-                          <span
-                            className={`text-sm font-medium leading-4 tracking-[-0.2px] capitalize ${
-                              transaction.status === "successful"
-                                ? "text-success"
-                                : "text-pending"
-                            }`}
-                          >
-                            {transaction.status}
-                          </span>
-                        ) : (
-                          <span className="text-gray-400 text-sm font-medium leading-4 tracking-[-0.2px]">
-                            {transaction.author}
-                          </span>
-                        )}
-                      </div>
+                      ) : (
+                        <span className="text-gray-400 text-sm font-medium leading-4 tracking-[-0.2px]">
+                          {transaction.author}
+                        </span>
+                      )}
                     </div>
-                  </td>
-                  <td className="text-right align-middle pb-6">
-                    <div className="text-base font-bold leading-[24px] tracking-[-0.4px] text-black-300">
-                      {formatCurrency(transaction.amount)}
-                    </div>
-                    <div className="text-sm font-medium leading-4 tracking-[-0.2px] text-gray-400 mt-1">
-                      {formatDate(transaction.date)}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                  </div>
+                </td>
+                <td className="text-right align-middle pb-6">
+                  <div className="text-base font-bold leading-[24px] tracking-[-0.4px] text-black-300">
+                    {formatCurrency(transaction.amount)}
+                  </div>
+                  <div className="text-sm font-medium leading-4 tracking-[-0.2px] text-gray-400 mt-1">
+                    {formatDate(transaction.date)}
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
       )}
     </div>
   );

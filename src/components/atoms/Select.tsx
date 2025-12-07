@@ -23,7 +23,6 @@ export function CustomSelect({
   const [selectedValues, setSelectedValues] = useState<string[]>(value);
   const selectRef = useRef<HTMLDivElement>(null);
 
-  // Sync internal state with external value prop
   useEffect(() => {
     setSelectedValues(value);
   }, [value]);
@@ -141,21 +140,14 @@ export function CustomSelect({
               <div
                 key={option.value}
                 onClick={() => handleOptionClick(option.value)}
-                className="flex items-center cursor-pointer hover:bg-gray-50 rounded-md transition-colors"
-                style={{
-                  padding: "14px",
-                  gap: "12px",
-                }}
+                className="flex items-center cursor-pointer hover:bg-gray-50 rounded-md transition-colors p-[14px] gap-3"
               >
                 <div
-                  className="flex items-center justify-center"
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    borderRadius: "4px",
-                    backgroundColor: isChecked ? "#1C1B1F" : "transparent",
-                    border: isChecked ? "none" : "1px solid #E5E7EB",
-                  }}
+                  className={`flex items-center justify-center w-5 h-5 rounded ${
+                    isChecked
+                      ? "bg-black-300 border-0"
+                      : "bg-transparent border border-gray-50"
+                  }`}
                 >
                   {isChecked && (
                     <svg
