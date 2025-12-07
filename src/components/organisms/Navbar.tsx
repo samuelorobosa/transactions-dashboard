@@ -10,7 +10,7 @@ import ChatIcon from "../../assets/icons/chat.svg?react";
 import MenuIcon from "../../assets/icons/menu.svg?react";
 import { CiSettings, CiLogout } from "react-icons/ci";
 import { GoBug } from "react-icons/go";
-import { MdSwitchAccount, MdCardGiftcard, MdExtension } from "react-icons/md";
+import { MdSwitchAccount, MdCardGiftcard, MdApps } from "react-icons/md";
 import { IoReceiptOutline } from "react-icons/io5";
 import { useUser } from "../../queries/revenue.queries";
 import { getUserInitials } from "../../utils";
@@ -27,7 +27,7 @@ export default function Navbar() {
     { name: "Settings", icon: CiSettings },
     { name: "Purchase History", icon: IoReceiptOutline },
     { name: "Refer and Earn", icon: MdCardGiftcard },
-    { name: "Integrations", icon: MdExtension },
+    { name: "Integrations", icon: MdApps },
     { name: "Report Bug", icon: GoBug },
     { name: "Switch Account", icon: MdSwitchAccount },
     { name: "Sign Out", icon: CiLogout },
@@ -124,12 +124,10 @@ export default function Navbar() {
 
   return (
     <nav className="w-full h-16 bg-white border-2 border-white rounded-[100px] shadow-[0px_2px_4px_0px_rgba(45,59,67,0.051),0px_2px_6px_0px_rgba(45,59,67,0.059)] flex items-center justify-between p-3">
-      {/* Brand Logo */}
       <div className="flex items-center">
         <img src={mainstackLogo} alt="Mainstack Logo" className="w-9 h-9" />
       </div>
 
-      {/* Nav Links */}
       <div className="flex items-center gap-6">
         {navLinks.map((link) => {
           const style = getLinkStyle(link.name);
@@ -146,19 +144,15 @@ export default function Navbar() {
         })}
       </div>
 
-      {/* Right Side Icons */}
       <div className="flex items-center gap-4">
-        {/* Notifications Icon */}
         <button className="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full">
           <NotificationsIcon className="w-5 h-5 fill-gray-400" />
         </button>
 
-        {/* Chat Icon */}
         <button className="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full">
           <ChatIcon className="w-5 h-5 fill-gray-400" />
         </button>
 
-        {/* Profile Menu with Initials */}
         {userLoading ? (
           <Skeleton
             width={81}
@@ -181,20 +175,29 @@ export default function Navbar() {
             </div>
             {isMounted && (
               <div
-                className={`absolute right-0 z-50 w-[240px] bg-white rounded-lg transition-all duration-200 ease-in-out ${
+                className={`absolute right-0 top-[calc(100%+8px)] z-50 w-[360px] bg-white rounded-lg transition-all duration-200 ease-in-out p-2 shadow-[0px_6px_12px_0px_rgba(92,115,131,0.08),0px_4px_8px_0px_rgba(92,115,131,0.08)] ${
                   isAnimating
                     ? isProfileMenuOpen
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 -translate-y-2"
                     : "opacity-100 translate-y-0"
                 }`}
-                style={{
-                  top: "calc(100% + 8px)",
-                  boxShadow:
-                    "0px 6px 12px 0px rgba(92, 115, 131, 0.08), 0px 4px 8px 0px rgba(92, 115, 131, 0.08)",
-                  padding: "8px",
-                }}
               >
+                <div className="flex items-center gap-3 p-[14px]">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold bg-profile-gradient">
+                    <span className="text-profile-gradient">
+                      {getUserInitials(userData)}
+                    </span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-base leading-6 tracking-[-0.4px] text-black-300">
+                      {userData.first_name} {userData.last_name}
+                    </span>
+                    <span className="text-sm text-gray-400">
+                      {userData.email}
+                    </span>
+                  </div>
+                </div>
                 {profileMenuOptions.map((option) => {
                   const Icon = option.icon;
                   return (
@@ -204,7 +207,7 @@ export default function Navbar() {
                       className="flex items-center cursor-pointer hover:bg-gray-50 rounded-md transition-colors p-[14px] gap-3"
                     >
                       {Icon && <Icon className="w-5 h-5 text-gray-400" />}
-                      <span className="font-semibold text-base leading-6 tracking-[-0.4px] text-black-300">
+                      <span className="font-medium text-sm leading-6 tracking-[-0.4px] text-black-300">
                         {option.name}
                       </span>
                     </div>
