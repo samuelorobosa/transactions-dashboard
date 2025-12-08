@@ -22,6 +22,10 @@ Create `.env` in project root:
 VITE_API_BASE_URL=https://fe-task-api.mainstack.io
 ```
 
+## Preview
+
+![Dashboard preview](docs/dashboard.png)
+
 ## Scripts
 
 - `npm run dev` - dev server with HMR
