@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { DateRangePicker } from "../DateRangePicker";
 
 vi.mock("../Calendar", () => ({
-  Calendar: ({ selected, onSelect }: any) => (
+  Calendar: ({ onSelect }: any) => (
     <div
       data-testid="calendar"
       onClick={() => onSelect?.(new Date("2024-01-20"))}
@@ -145,7 +145,6 @@ describe("DateRangePicker", () => {
   });
 
   it("should update end date if selected start date is after end date", async () => {
-    const user = userEvent.setup();
     const onStartDateChange = vi.fn();
     const onEndDateChange = vi.fn();
 

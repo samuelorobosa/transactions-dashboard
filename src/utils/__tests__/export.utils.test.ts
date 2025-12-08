@@ -6,6 +6,8 @@ import {
 } from "../export.utils";
 import type { DisplayTransaction } from "../../types/app";
 
+const globalAny = globalThis as any;
+
 describe("convertTransactionsToCsv", () => {
   it("should convert transactions to CSV format", () => {
     const transactions: DisplayTransaction[] = [
@@ -116,8 +118,8 @@ describe("convertTransactionsToCsv", () => {
 
 describe("downloadCsv", () => {
   beforeEach(() => {
-    global.URL.createObjectURL = vi.fn(() => "blob:mock-url");
-    global.URL.revokeObjectURL = vi.fn();
+    globalAny.URL.createObjectURL = vi.fn(() => "blob:mock-url");
+    globalAny.URL.revokeObjectURL = vi.fn();
 
     document.body.appendChild = vi.fn();
     document.body.removeChild = vi.fn();
@@ -149,8 +151,8 @@ describe("downloadCsv", () => {
 
 describe("exportTransactionsToCsv", () => {
   beforeEach(() => {
-    global.URL.createObjectURL = vi.fn(() => "blob:mock-url");
-    global.URL.revokeObjectURL = vi.fn();
+    globalAny.URL.createObjectURL = vi.fn(() => "blob:mock-url");
+    globalAny.URL.revokeObjectURL = vi.fn();
     document.body.appendChild = vi.fn();
     document.body.removeChild = vi.fn();
 

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../../test/utils";
 import TransactionsTable from "../TransactionsTable";
@@ -11,7 +11,7 @@ vi.mock("../../../queries/revenue.queries", () => ({
 }));
 
 vi.mock("../Sheet", () => ({
-  Sheet: ({ children, open }: any) => <div data-testid="sheet">{children}</div>,
+  Sheet: ({ children }: any) => <div data-testid="sheet">{children}</div>,
   SheetContent: ({ children }: any) => <div>{children}</div>,
   SheetHeader: ({ children }: any) => <div>{children}</div>,
   SheetTitle: ({ children }: any) => <h2>{children}</h2>,
@@ -136,7 +136,7 @@ describe("TransactionsTable", () => {
 
   it("should handle export functionality", async () => {
     const user = userEvent.setup();
-    const { container } = renderWithProviders(<TransactionsTable />);
+    renderWithProviders(<TransactionsTable />);
 
     const exportButton = screen.getByText("Export List");
     await user.click(exportButton);

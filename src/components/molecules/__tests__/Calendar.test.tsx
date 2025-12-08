@@ -23,7 +23,7 @@ describe("Calendar", () => {
   });
 
   it("should apply custom className", () => {
-    const { container } = render(<Calendar className="custom-class" />);
+    render(<Calendar className="custom-class" />);
 
     const calendar = screen.getByTestId("day-picker");
     expect(calendar).toHaveClass("custom-class");
