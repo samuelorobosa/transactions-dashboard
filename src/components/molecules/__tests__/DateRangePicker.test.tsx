@@ -158,8 +158,6 @@ describe("DateRangePicker", () => {
       />
     );
 
-    // This test would need more complex setup to test the date validation logic
-    // For now, we verify the component renders correctly with both dates
     expect(screen.getByText("Jan 15, 2024")).toBeInTheDocument();
     expect(screen.getByText("Jan 20, 2024")).toBeInTheDocument();
   });

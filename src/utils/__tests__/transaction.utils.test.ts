@@ -163,9 +163,9 @@ describe("prepareChartData", () => {
     const result = prepareChartData(transactions);
 
     expect(result).toHaveLength(2);
-    expect(result[0].amount).toBe(80000); // 50000 + 30000
+    expect(result[0].amount).toBe(80000);
     expect(result[0].date).toBe("2024-01-15");
-    expect(result[1].amount).toBe(-20000); // withdrawal is negative
+    expect(result[1].amount).toBe(-20000);
     expect(result[1].date).toBe("2024-01-16");
   });
 
